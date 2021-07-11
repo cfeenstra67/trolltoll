@@ -1,0 +1,25 @@
+
+// @each $name, $color in $theme-colors {
+//     $inverted: complement($color);
+//     $theme-colors: map-merge(
+//         (
+//             $name: $inverted
+//         ),
+//         $theme-colors
+//     );
+// }
+
+// @debug $theme-colors;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+@mixin badge-variant($color, $background-color) {
+    color: $color;
+    background-color: $background-color;
+}
+
+@each $state, $value in $theme-colors {
+  .badge-#{$state} {
+    @include badge-variant(color-contrast($value), $value);
+  }
+}

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0
+
 pragma solidity >=0.7.0 <0.9.0;
 
 
@@ -25,11 +27,12 @@ contract Riddle {
         string memory answer,
         uint guessCostValue,
         uint creatorFeePercentValue,
+        address ownerAddress,
         address creatorAddress,
         string memory salt
     ) payable {
         require(creatorFeePercentValue < 100, "Invalid creator fee.");
-        owner = msg.sender;
+        owner = ownerAddress;
         riddleText = riddle;
         answerSalt = sha256(bytes(salt));
         answerHash = sha256(abi.encodePacked(bytes(answer), answerSalt));
@@ -46,15 +49,18 @@ contract Riddle {
         selfdestruct(payable(owner));
     }
     
-    function guess(string memory guessText) public payable returns (bool) {
+    function guess(string memory guessText) public payable {
         require(!isAnswered, "Sorry, too late!");
-        require(msg.sender != owner, "You know the answer, that's no fair!");
         require(msg.value == guessCost, "Invalid guess amount.");
         // pay the owner the guess cost
         uint ownerShare = msg.value * 100 / (100 + creatorFeePercent);
         uint creatorShare = msg.value - ownerShare;
-        payable(owner).transfer(ownerShare);
-        payable(creator).transfer(creatorShare);
+        if (ownerShare > 0) {
+            payable(owner).transfer(ownerShare);
+        }
+        if (creatorShare > 0) {
+            payable(creator).transfer(creatorShare);
+        }
         // check that this address can guess
         bytes32 guessHash = sha256(abi.encodePacked(bytes(guessText), answerSalt));
         bool correct = guessHash == answerHash;
@@ -64,10 +70,10 @@ contract Riddle {
             answerText = guessText;
             isAnswered = true;
             winner = msg.sender;
-            payable(msg.sender).transfer(prize);
-            return true;
+            if (prize > 0) {
+                payable(msg.sender).transfer(prize);
+            }
         }
-        return false;
     }
 
 }

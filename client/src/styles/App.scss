@@ -1,0 +1,117 @@
+
+.home-page-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+.alert-dismissible {
+
+    .close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        padding: .75rem 1.25rem;
+        color: inherit;
+        background-color: transparent;
+        border: 0;
+    }
+
+    .close:hover {
+        opacity: 1;
+    }
+
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.riddle-card {
+    margin-bottom: 1rem;
+    padding: 2rem;
+    padding-top: 3rem;
+    font-size: 8;
+
+    .riddle-card-label {
+        position: absolute;
+        color: $gray-600;
+        top: .25rem;
+        left: .5rem;
+    }
+
+    .riddle-card-info {
+        position: absolute;;
+        top: .25rem;
+        right: .74rem;
+        color: $gray-600;
+    }
+
+    .riddle-card-info:hover {
+        cursor: pointer;
+    }
+
+}
+
+.amount-input {
+    min-width: 4.5rem;
+    text-align: right;
+    display: block;
+}
+
+a.brand {
+    font-size: 2.5rem;
+    text-decoration: none;
+    color: $body-color;
+    vertical-align: middle;
+}
+
+.brand img {
+    height: 4rem;
+    width: 4rem;
+    object-fit: cover;
+    border-radius: 2rem;
+    margin-right: 1rem;
+    border: 2px solid $gray-400;
+}
+
+.brand:hover {
+    color: $body-color;
+}
+
+.riddle-spinner {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+    display: flex;
+    justify-content: center;
+}
+
+.dark-mode-button {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1rem;
+}
+
+.dark-mode-button:hover {
+    cursor: pointer;
+}

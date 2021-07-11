@@ -1,0 +1,4 @@
+encryptionsalt: v1:mkqAuAlxkRI=:v1:LPuVokWChyLojQF8:apsw6tSKIx+dKsvu+QsXQ9ktXwuugg==
+config:
+  aws:region: us-east-1
+  trolltoll.crypto:dns-name: trolltoll.xyz

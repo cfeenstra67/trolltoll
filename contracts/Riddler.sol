@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0
+
 pragma solidity >=0.7.0 <0.9.0;
 
 import "./Riddle.sol";
@@ -25,12 +27,13 @@ contract Riddler {
         string memory answer,
         uint guessCostValue,
         string memory salt
-    ) public returns(address) {
-        Riddle newContract = new Riddle(
+    ) public payable returns(address) {
+        Riddle newContract = new Riddle{value: msg.value}(
             riddle,
             answer,
             guessCostValue,
             creatorFeePercent,
+            msg.sender,
             creator,
             salt
         );

@@ -1,11 +1,16 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
+import { Route, Switch, Redirect } from 'react-router-dom'
+import TruffleContract from 'truffle-contract'
+import RiddleContract from "./contracts/Riddle.json";
 import RiddlerContract from "./contracts/Riddler.json";
 import getWeb3 from "./getWeb3";
+// We will create these two pages in a moment
+import HomePage from './pages/HomePage'
+import RiddlePage from './pages/RiddlePage'
 
-import "./App.css";
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  state = { storageValue: 0, web3: null, accounts: null, contract: null, Riddler: null, Riddle: null };
 
   componentDidMount = async () => {
     try {
@@ -23,9 +28,25 @@ class App extends Component {
         deployedNetwork && deployedNetwork.address,
       );
 
+      let Riddler = TruffleContract(RiddlerContract);
+      Riddler.setProvider(web3.currentProvider);
+
+      let Riddle = TruffleContract(RiddleContract);
+      Riddle.setProvider(web3.currentProvider);
+
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.runExample);
+      this.setState(
+        { 
+          web3, 
+          accounts,
+          networkId,
+          Riddler,
+          Riddle,
+          contract: instance
+        },
+        () => (this.onMount && this.onMount())
+      );
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -35,39 +56,30 @@ class App extends Component {
     }
   };
 
-  runExample = async () => {
-    // const { accounts, contract } = this.state;
+  renderComponent = function(Component) { return (props) => 
+    <Component app={this} {...props} />
+  };
 
-    // // Stores a given value, 5 by default.
-    // await contract.methods.set(5).send({ from: accounts[0] });
+  onMount = function() {};
 
-    // // Get the value from the contract to prove it worked.
-    // const response = await contract.methods.get().call();
-
-    // // Update state with the result.
-    // this.setState({ storageValue: response });
+  resetHandlers = function() {
+    this.onMount = function() {};
   };
 
   render() {
-    if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
-    }
+    this.resetHandlers();
     return (
-      <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 40</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
-      </div>
-    );
-  }
+      <Switch>
+        <Route exact path="/" render={this.renderComponent(HomePage)} />
+        <Route path="/:id" render={this.renderComponent(RiddlePage)} />
+        <Redirect to="/" />
+      </Switch>
+    )
+  };
+}
+
+export function getRiddleUrl(id) {
+  return `${id}`;
 }
 
 export default App;

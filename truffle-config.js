@@ -9,6 +9,14 @@ module.exports = {
     },
     develop: {
       port: 8545
+    },
+    main: {
+      host: "192.168.1.111",
+      port: 8545,
+      network_id: 1,
+      timeoutBlocks: 1000,
+      gas: 2000000, // cap
+      gasPrice: 15000000000
     }
   },
   compilers: {

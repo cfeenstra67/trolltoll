@@ -1,0 +1,21 @@
+
+.theme--dark {
+    @import "variables-dark-mode";
+
+    @import "bootstrap";
+
+    @import "./App.scss";
+}
+
+body.theme--dark {
+    @import "variables-dark-mode";
+
+    color: $body-color;
+    background-color: $body-bg; // 2
+}
+
+@import "variables-custom";
+
+@import "bootstrap";
+
+@import "./App.scss";
